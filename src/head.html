@@ -44,6 +44,81 @@ a{color:var(--acc2)}
 ul,ol{padding-left:1.4em}
 li{margin:.15em 0}
 footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-top:30px;padding-top:10px}
+
+/* Mobile reading and native disclosures. */
+:root{color-scheme:light dark}
+main{max-width:960px;padding:20px 16px 100px;overflow-wrap:anywhere}
+h1{font-size:clamp(1.45rem,5vw,2rem);line-height:1.35;margin:.5em 0}
+h2{font-size:1.2rem;line-height:1.55;margin:0;padding:0;border:0;background:none}
+h3{font-size:1.05rem;line-height:1.55;margin:0;padding:0;border:0}
+h4{font-size:1rem;margin:1.2em 0 .5em}
+p{margin:.7em 0}
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:24px 0}
+.game-card{min-width:0;display:flex;flex-direction:column;gap:8px;padding:16px 12px;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:12px;text-decoration:none}
+.game-card strong{font-size:1.05rem;color:var(--fg)}
+.game-card span{font-size:.78rem;line-height:1.6;color:var(--mut);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.game-card:hover{border-color:var(--acc)}
+.game{padding:0;margin:24px 0;border-radius:14px;min-width:0}
+summary{cursor:pointer;min-height:48px;padding:14px;list-style:none;position:relative;padding-right:40px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'＋';position:absolute;right:14px;top:14px;color:var(--acc2);font-weight:600}
+details[open]>summary::after{content:'−'}
+summary h2,summary h3{display:inline}
+.game-panel>summary{background:var(--hi);border-radius:13px}
+.game-panel[open]>summary{border-radius:13px 13px 0 0;border-bottom:1px solid var(--line)}
+.game-body{padding:12px}
+.chapter{border-top:1px solid var(--line);margin-top:8px;min-width:0}
+.chapter>summary{padding-left:0}
+.chapter-body{padding:0 0 12px}
+.secnav{display:flex;flex-wrap:wrap;gap:6px;line-height:1.5;margin:4px 0 16px}
+.secnav a{margin:0;padding:9px 10px;border-radius:8px;max-width:100%}
+.tw{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:6px}
+table{width:100%;min-width:520px;line-height:1.65}
+th,td{padding:10px;overflow-wrap:anywhere}
+th{white-space:normal}
+pre{display:block;max-width:100%;overflow-x:auto}
+code,.pat{white-space:normal;overflow-wrap:anywhere}
+.badge,.ok,.part,.todo{display:inline-block;vertical-align:baseline;font-size:.75rem;line-height:1.6;font-weight:600;padding:2px 7px;border-radius:6px;margin:0 3px;white-space:normal;box-decoration-break:clone}
+.ok{background:#e0f2e7;color:#205d39}
+.part{background:#fff0c2;color:#735000}
+.todo{background:#ffe3e3;color:#952828}
+.caution{background:var(--hi);border:1px solid var(--line);font-size:.78rem;padding:0 4px}
+details.toc{padding:4px 12px;margin:20px 0}
+details.toc summary{padding:12px 28px 12px 0}
+details.toc li{margin:8px 0}
+details.toc a{display:inline-block;padding:3px 0}
+.back-top{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:20;padding:11px 15px;background:var(--nav);color:#fff;border:1px solid var(--line);border-radius:24px;font-size:.85rem;text-decoration:none;box-shadow:0 3px 12px #0003}
+a:focus-visible,summary:focus-visible,.tw:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+:target{scroll-margin-top:70px}
+@media(min-width:700px){.game-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.game-body{padding:20px}h2{font-size:1.4rem}}
+@media(prefers-color-scheme:dark){.ok{background:#213e2e;color:#b6e7c9}.part{background:#44391c;color:#f6d67b}.todo{background:#492629;color:#ffbaba}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tw').forEach(wrapper => {
+    wrapper.tabIndex = 0;
+    wrapper.setAttribute('role', 'region');
+    wrapper.setAttribute('aria-label', '表格，可横向滚动');
+  });
+  function revealTarget() {
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    if (!target) return;
+    for (let parent = target; parent; parent = parent.parentElement) {
+      if (parent.tagName === 'DETAILS') parent.open = true;
+    }
+    if (target.matches('.game')) target.querySelector('.game-panel').open = true;
+    requestAnimationFrame(() => target.scrollIntoView({block: 'start'}));
+  }
+  window.addEventListener('hashchange', revealTarget);
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (link && link.hash === location.hash) revealTarget();
+  });
+  revealTarget();
+});
+</script>
 </head>
 <body id="top">

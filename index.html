@@ -44,21 +44,97 @@ a{color:var(--acc2)}
 ul,ol{padding-left:1.4em}
 li{margin:.15em 0}
 footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-top:30px;padding-top:10px}
+
+/* Mobile reading and native disclosures. */
+:root{color-scheme:light dark}
+main{max-width:960px;padding:20px 16px 100px;overflow-wrap:anywhere}
+h1{font-size:clamp(1.45rem,5vw,2rem);line-height:1.35;margin:.5em 0}
+h2{font-size:1.2rem;line-height:1.55;margin:0;padding:0;border:0;background:none}
+h3{font-size:1.05rem;line-height:1.55;margin:0;padding:0;border:0}
+h4{font-size:1rem;margin:1.2em 0 .5em}
+p{margin:.7em 0}
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:24px 0}
+.game-card{min-width:0;display:flex;flex-direction:column;gap:8px;padding:16px 12px;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:12px;text-decoration:none}
+.game-card strong{font-size:1.05rem;color:var(--fg)}
+.game-card span{font-size:.78rem;line-height:1.6;color:var(--mut);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.game-card:hover{border-color:var(--acc)}
+.game{padding:0;margin:24px 0;border-radius:14px;min-width:0}
+summary{cursor:pointer;min-height:48px;padding:14px;list-style:none;position:relative;padding-right:40px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'＋';position:absolute;right:14px;top:14px;color:var(--acc2);font-weight:600}
+details[open]>summary::after{content:'−'}
+summary h2,summary h3{display:inline}
+.game-panel>summary{background:var(--hi);border-radius:13px}
+.game-panel[open]>summary{border-radius:13px 13px 0 0;border-bottom:1px solid var(--line)}
+.game-body{padding:12px}
+.chapter{border-top:1px solid var(--line);margin-top:8px;min-width:0}
+.chapter>summary{padding-left:0}
+.chapter-body{padding:0 0 12px}
+.secnav{display:flex;flex-wrap:wrap;gap:6px;line-height:1.5;margin:4px 0 16px}
+.secnav a{margin:0;padding:9px 10px;border-radius:8px;max-width:100%}
+.tw{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:6px}
+table{width:100%;min-width:520px;line-height:1.65}
+th,td{padding:10px;overflow-wrap:anywhere}
+th{white-space:normal}
+pre{display:block;max-width:100%;overflow-x:auto}
+code,.pat{white-space:normal;overflow-wrap:anywhere}
+.badge,.ok,.part,.todo{display:inline-block;vertical-align:baseline;font-size:.75rem;line-height:1.6;font-weight:600;padding:2px 7px;border-radius:6px;margin:0 3px;white-space:normal;box-decoration-break:clone}
+.ok{background:#e0f2e7;color:#205d39}
+.part{background:#fff0c2;color:#735000}
+.todo{background:#ffe3e3;color:#952828}
+.caution{background:var(--hi);border:1px solid var(--line);font-size:.78rem;padding:0 4px}
+details.toc{padding:4px 12px;margin:20px 0}
+details.toc summary{padding:12px 28px 12px 0}
+details.toc li{margin:8px 0}
+details.toc a{display:inline-block;padding:3px 0}
+.back-top{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:20;padding:11px 15px;background:var(--nav);color:#fff;border:1px solid var(--line);border-radius:24px;font-size:.85rem;text-decoration:none;box-shadow:0 3px 12px #0003}
+a:focus-visible,summary:focus-visible,.tw:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+:target{scroll-margin-top:70px}
+@media(min-width:700px){.game-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.game-body{padding:20px}h2{font-size:1.4rem}}
+@media(prefers-color-scheme:dark){.ok{background:#213e2e;color:#b6e7c9}.part{background:#44391c;color:#f6d67b}.todo{background:#492629;color:#ffbaba}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tw').forEach(wrapper => {
+    wrapper.tabIndex = 0;
+    wrapper.setAttribute('role', 'region');
+    wrapper.setAttribute('aria-label', '表格，可横向滚动');
+  });
+  function revealTarget() {
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    if (!target) return;
+    for (let parent = target; parent; parent = parent.parentElement) {
+      if (parent.tagName === 'DETAILS') parent.open = true;
+    }
+    if (target.matches('.game')) target.querySelector('.game-panel').open = true;
+    requestAnimationFrame(() => target.scrollIntoView({block: 'start'}));
+  }
+  window.addEventListener('hashchange', revealTarget);
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (link && link.hash === location.hash) revealTarget();
+  });
+  revealTarget();
+});
+</script>
 </head>
 <body id="top">
 <nav class="top"><a href="#top">☰ 目录</a><a href="#tt">小小城镇</a><a href="#sab">矮人矿坑</a><a href="#catan">卡坦岛</a><a href="#fcm">快餐连锁大亨</a><a href="#mk">骰子街</a><a href="#ng">北境之地</a><a href="#pm5">现在下午五点</a></nav>
 <main>
 <h1>俊伟的桌游规则手册</h1>
-<p class="meta">最后更新：2026-10-22 02:55（北京时间 UTC+8）· 共 7 款游戏</p>
-<div class="warn">本页只收录<b>中文文字摘要</b>，整理自各游戏官方规则书；不收录规则书 PDF、规则书照片或卡图。⚠️ = 未核实 / 有疑问，【推断】= 规则书未明写。实际以自己那盒的规则书和卡面为准。官方链接见各游戏「来源」。</div>
-<details class="toc" open><summary>📖 目录（点开/收起）</summary><ul><li><a href="#tt"><b>小小城镇 Tiny Towns</b></a><span class="ok">完整</span><ul><li><a href="#tt-info">基本信息</a></li><li><a href="#tt-play">核心玩法 / 回合流程</a></li><li><a href="#tt-rules">建筑规则（全部 25 张 + 15 座纪念碑）</a></li><li><a href="#tt-score">得分方式</a></li><li><a href="#tt-penalty">扣分 / 惩罚规则</a></li><li><a href="#tt-faq">常见误区 / 待核实</a></li><li><a href="#tt-src">来源</a></li></ul></li><li><a href="#sab"><b>矮人矿坑 Saboteur（俊伟称《矮人绝境》）</b></a><span class="part">基础版/矿洞逃生完整；2 代简要；20 周年版待补</span><ul><li><a href="#sab-info">基本信息</a></li><li><a href="#sab-play">核心玩法 / 回合流程（基础版）</a></li><li><a href="#sab-rules">卡牌 / 角色规则</a></li><li><a href="#sab-score">得分方式</a></li><li><a href="#sab-penalty">扣分 / 惩罚规则</a></li><li><a href="#sab-faq">常见误区 / 待核实</a></li><li><a href="#sab-src">来源</a></li></ul></li><li><a href="#catan"><b>卡坦岛 CATAN（基础 + 航海家 + 城市与骑士 + 各 5–6 人扩展）</b></a><span class="ok">完整</span><ul><li><a href="#catan-info">基本信息</a></li><li><a href="#catan-play">核心玩法 / 回合流程（基础版）</a></li><li><a href="#catan-rules">卡牌与扩展规则</a></li><li><a href="#catan-score">得分方式</a></li><li><a href="#catan-penalty">扣分 / 惩罚规则</a></li><li><a href="#catan-faq">常见误区 / 待核实</a></li><li><a href="#catan-src">来源</a></li></ul></li><li><a href="#fcm"><b>快餐连锁大亨 Food Chain Magnate（「肥肠面」）+ 扩展《番身机制与茄妙构想》</b></a><span class="ok">完整</span><ul><li><a href="#fcm-info">基本信息</a></li><li><a href="#fcm-play">核心玩法 / 回合流程（7 个阶段）</a></li><li><a href="#fcm-rules">里程碑、员工与扩展 17 模块</a></li><li><a href="#fcm-score">得分方式</a></li><li><a href="#fcm-penalty">扣分 / 惩罚规则</a></li><li><a href="#fcm-faq">常见误区 / 待核实</a></li><li><a href="#fcm-src">来源</a></li></ul></li><li><a href="#mk"><b>骰子街 Machi Koro（俊伟叫它《投资街》，对应关系为推断）+ 港口扩充 Harbor</b></a><span class="ok">完整</span><ul><li><a href="#mk-info">基本信息</a></li><li><a href="#mk-play">核心玩法 / 回合流程</a></li><li><a href="#mk-rules">建筑 / 卡牌规则</a></li><li><a href="#mk-score">得分方式</a></li><li><a href="#mk-penalty">扣分 / 惩罚规则</a></li><li><a href="#mk-faq">常见误区 / 待核实</a></li><li><a href="#mk-src">来源</a></li></ul></li><li><a href="#ng"><b>北境之地：人迹罕至 Northgard: Uncharted Lands</b></a><span class="ok">完整（扩展仅简述）</span><ul><li><a href="#ng-info">基本信息</a></li><li><a href="#ng-play">核心玩法 / 回合流程</a></li><li><a href="#ng-rules">行动卡、建筑、战斗与部族</a></li><li><a href="#ng-score">得分方式</a></li><li><a href="#ng-penalty">扣分 / 惩罚规则</a></li><li><a href="#ng-faq">常见误区 / 待核实</a></li><li><a href="#ng-src">来源</a></li></ul></li><li><a href="#pm5"><b>现在下午五点 It's 5pm（イッツファイブピーエム）</b></a><span class="part">完整摘要，但未取得官方 PDF</span><ul><li><a href="#pm5-info">基本信息</a></li><li><a href="#pm5-play">核心玩法 / 回合流程</a></li><li><a href="#pm5-rules">卡牌规则（目的卡 / 单人）</a></li><li><a href="#pm5-score">得分方式</a></li><li><a href="#pm5-penalty">扣分 / 惩罚规则</a></li><li><a href="#pm5-faq">常见误区 / 待核实</a></li><li><a href="#pm5-src">来源</a></li></ul></li></ul></details>
+<p class="meta">最后更新：2026-10-22 03:21（北京时间 UTC+8）· 共 7 款游戏</p>
+<div class="game-grid" aria-label="游戏入口"><a class="game-card" href="#tt"><strong>小小城镇</strong><span>Tiny Towns</span></a><a class="game-card" href="#sab"><strong>矮人矿坑</strong><span>Saboteur（俊伟称《矮人绝境》）</span></a><a class="game-card" href="#catan"><strong>卡坦岛</strong><span>CATAN（基础 + 航海家 + 城市与骑士 + 各 5–6 人扩展）</span></a><a class="game-card" href="#fcm"><strong>快餐连锁大亨</strong><span>Food Chain Magnate（「肥肠面」）+ 扩展《番身机制与茄妙构想》</span></a><a class="game-card" href="#mk"><strong>骰子街</strong><span>Machi Koro（俊伟叫它《投资街》，对应关系为推断）+ 港口扩充 Harbor</span></a><a class="game-card" href="#ng"><strong>北境之地</strong><span>人迹罕至 Northgard: Uncharted Lands</span></a><a class="game-card" href="#pm5"><strong>现在下午五点</strong><span>It&#x27;s 5pm（イッツファイブピーエム）</span></a></div>
+<div class="warn">本页只收录<b>中文文字摘要</b>，整理自各游戏官方规则书；不收录规则书 PDF、规则书照片或卡图。<span class="badge caution">⚠️</span> = 未核实 / 有疑问，【推断】= 规则书未明写。实际以自己那盒的规则书和卡面为准。官方链接见各游戏「来源」。</div>
+<details class="toc" open><summary>📖 目录（点开/收起）</summary><ul><li><a href="#tt"><b>小小城镇 Tiny Towns</b></a><span class="ok">完整</span><ul><li><a href="#tt-info">基本信息</a></li><li><a href="#tt-play">核心玩法 / 回合流程</a></li><li><a href="#tt-rules">建筑规则（全部 25 张 + 15 座纪念碑）</a></li><li><a href="#tt-score">得分方式</a></li><li><a href="#tt-penalty">扣分 / 惩罚规则</a></li><li><a href="#tt-faq">常见误区 / 待核实</a></li><li><a href="#tt-src">来源</a></li></ul></li><li><a href="#sab"><b>矮人矿坑 Saboteur（俊伟称《矮人绝境》）</b></a><span class="part">基础版/矿洞逃生完整；2 代简要；20 周年版待补</span><ul><li><a href="#sab-info">基本信息</a></li><li><a href="#sab-play">核心玩法 / 回合流程（基础版）</a></li><li><a href="#sab-rules">卡牌 / 角色规则</a></li><li><a href="#sab-score">得分方式</a></li><li><a href="#sab-penalty">扣分 / 惩罚规则</a></li><li><a href="#sab-faq">常见误区 / 待核实</a></li><li><a href="#sab-src">来源</a></li></ul></li><li><a href="#catan"><b>卡坦岛 CATAN（基础 + 航海家 + 城市与骑士 + 各 5–6 人扩展）</b></a><span class="ok">完整</span><ul><li><a href="#catan-info">基本信息</a></li><li><a href="#catan-play">核心玩法 / 回合流程（基础版）</a></li><li><a href="#catan-rules">卡牌与扩展规则</a></li><li><a href="#catan-score">得分方式</a></li><li><a href="#catan-penalty">扣分 / 惩罚规则</a></li><li><a href="#catan-faq">常见误区 / 待核实</a></li><li><a href="#catan-src">来源</a></li></ul></li><li><a href="#fcm"><b>快餐连锁大亨 Food Chain Magnate（「肥肠面」）+ 扩展《番身机制与茄妙构想》</b></a><span class="ok">完整</span><ul><li><a href="#fcm-info">基本信息</a></li><li><a href="#fcm-play">核心玩法 / 回合流程（7 个阶段）</a></li><li><a href="#fcm-rules">里程碑、员工与扩展 17 模块</a></li><li><a href="#fcm-score">得分方式</a></li><li><a href="#fcm-penalty">扣分 / 惩罚规则</a></li><li><a href="#fcm-faq">常见误区 / 待核实</a></li><li><a href="#fcm-src">来源</a></li></ul></li><li><a href="#mk"><b>骰子街 Machi Koro（俊伟叫它《投资街》，对应关系为推断）+ 港口扩充 Harbor</b></a><span class="ok">完整</span><ul><li><a href="#mk-info">基本信息</a></li><li><a href="#mk-play">核心玩法 / 回合流程</a></li><li><a href="#mk-rules">建筑 / 卡牌规则</a></li><li><a href="#mk-score">得分方式</a></li><li><a href="#mk-penalty">扣分 / 惩罚规则</a></li><li><a href="#mk-faq">常见误区 / 待核实</a></li><li><a href="#mk-src">来源</a></li></ul></li><li><a href="#ng"><b>北境之地：人迹罕至 Northgard: Uncharted Lands</b></a><span class="ok">完整（扩展仅简述）</span><ul><li><a href="#ng-info">基本信息</a></li><li><a href="#ng-play">核心玩法 / 回合流程</a></li><li><a href="#ng-rules">行动卡、建筑、战斗与部族</a></li><li><a href="#ng-score">得分方式</a></li><li><a href="#ng-penalty">扣分 / 惩罚规则</a></li><li><a href="#ng-faq">常见误区 / 待核实</a></li><li><a href="#ng-src">来源</a></li></ul></li><li><a href="#pm5"><b>现在下午五点 It's 5pm（イッツファイブピーエム）</b></a><span class="ok">完整（已核对官方规则书）</span><ul><li><a href="#pm5-info">基本信息</a></li><li><a href="#pm5-play">核心玩法 / 回合流程</a></li><li><a href="#pm5-rules">店铺 / 目的卡 / 单人</a></li><li><a href="#pm5-score">得分方式</a></li><li><a href="#pm5-penalty">扣分 / 惩罚规则</a></li><li><a href="#pm5-faq">常见误区 / 待核实</a></li><li><a href="#pm5-src">来源</a></li></ul></li></ul></details>
 <section class="game" id="tt" data-short="小小城镇">
-<h2>小小城镇 Tiny Towns <span class="ok">完整</span></h2>
+<details class="game-panel" open><summary><h2>小小城镇 Tiny Towns <span class="badge ok">完整</span></h2></summary><div class="game-body">
 <div class="secnav"><a href="#tt-info">基本信息</a><a href="#tt-play">核心玩法 / 回合流程</a><a href="#tt-rules">建筑规则（全部 25 张 + 15 座纪念碑）</a><a href="#tt-score">得分方式</a><a href="#tt-penalty">扣分 / 惩罚规则</a><a href="#tt-faq">常见误区 / 待核实</a><a href="#tt-src">来源</a></div>
 <p class="meta">资料：<code>tiny-towns/buildings.md</code>（建筑/纪念碑）+ 官方规则书文本 <code>c7-tiny-towns-rulebook.txt</code>（回合流程与终局，摘要文件未单列，按规则书原文整理）。</p>
 
-<h3 id="tt-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="tt-info">基本信息</h3></summary><div class="chapter-body">
 <ul>
 <li>AEG，2019；设计 Peter McPherson。1–6 人，14 岁以上（规则书封面）。</li>
 <li>每人一块 <b>4×4</b> 城镇格。用资源方块按卡上的图案摆放来建造建筑，每种建筑计分方式不同。</li>
@@ -66,7 +142,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>5 种资源：<b>木</b> Wood（棕）、<b>麦</b> Wheat（黄）、<b>砖</b> Brick（红）、<b>玻</b> Glass（青/蓝）、<b>石</b> Stone（灰）。下文图案中 <b>·</b> = 空格（不需要资源）。</li>
 </ul>
 
-<h3 id="tt-play">核心玩法 / 回合流程</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="tt-play">核心玩法 / 回合流程</h3></summary><div class="chapter-body">
 <h4>准备</h4>
 <ol>
 <li>小屋 Cottage 卡面朝上放中央（每局必用）。</li>
@@ -102,7 +179,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li><b>单人</b>：没有建筑大师；翻 3 张资源卡，选 1 种放入，然后把那张放到牌堆底再补 1 张。要移除客栈 Inn、银行 Bank、铁草堡 Fort Ironweed、奥帕眼瞭望塔 Opaleye's Watch。</li>
 </ul>
 
-<h3 id="tt-rules">建筑规则（全部 25 张 + 15 座纪念碑）</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="tt-rules">建筑规则（全部 25 张 + 15 座纪念碑）</h3></summary><div class="chapter-body">
 <div class="hl">
 <h4>⭐ 重点：贸易站 Trading Post（黑色）</h4>
 <pre>石 木 ·
@@ -185,27 +263,29 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <tr><td>巴雷特城堡 Barrett Castle</td><td><span class="pat">麦 · · 石 / 木 玻 玻 砖</span></td><td>有供给时 5 VP；所有计分中算作 2 座小屋</td></tr>
 <tr><td>卡特琳娜大教堂 Cathedral of Caterina</td><td><span class="pat">· 麦 / 石 玻</span></td><td>2 VP；空格算 0 VP 而不是 −1</td></tr>
 <tr><td>铁草堡 Fort Ironweed</td><td><span class="pat">麦 · 砖 / 石 木 石</span></td><td>7 VP；建成后不再担任建筑大师（除非只剩你一人）</td></tr>
-<tr><td>罗迪纳大陵墓 Grand Mausoleum of the Rodina</td><td>⚠️图案待核实（单一来源：<span class="pat">麦 麦 / 砖 石</span>）</td><td>没有供给的小屋每座 3 VP</td></tr>
+<tr><td>罗迪纳大陵墓 Grand Mausoleum of the Rodina</td><td><span class="badge caution">⚠️</span>图案待核实（单一来源：<span class="pat">麦 麦 / 砖 石</span>）</td><td>没有供给的小屋每座 3 VP</td></tr>
 <tr><td>格罗夫大学 Grove University</td><td><span class="pat">· 砖 · / 石 玻 石</span></td><td>3 VP；建成时立刻在一个空格放 1 座任意建筑（不能是纪念碑）</td></tr>
 <tr><td>曼德拉斯宫 Mandras Palace</td><td><span class="pat">麦 玻 / 砖 木</span></td><td>每种相邻（上下左右）的不同建筑类型 2 VP</td></tr>
-<tr><td>新月方尖碑 Obelisk of the Crescent</td><td>⚠️图案待核实（单一来源：<span class="pat">麦 · · / 砖 玻 砖</span>）</td><td>之后所有建筑都可以放在城镇任意空格</td></tr>
+<tr><td>新月方尖碑 Obelisk of the Crescent</td><td><span class="badge caution">⚠️</span>图案待核实（单一来源：<span class="pat">麦 · · / 砖 玻 砖</span>）</td><td>之后所有建筑都可以放在城镇任意空格</td></tr>
 <tr><td>奥帕眼瞭望塔 Opaleye's Watch</td><td><span class="pat">木 · · · / 砖 玻 麦 麦 / 石 · · ·</span></td><td>建成时在卡上放 3 座不同建筑；左右邻座建造卡上有的类型时，从卡上拿一座放到你的空格</td></tr>
 <tr><td>古树神祠 Shrine of the Elder Tree</td><td><span class="pat">砖 麦 石 / 木 玻 木</span></td><td>按建成时城镇建筑数：1/2/3/4/5/6+ 座 = 1/2/3/4/5/8 VP</td></tr>
 <tr><td>席尔瓦广场 Silva Forum</td><td><span class="pat">· · 麦 · / 砖 砖 石 木</span></td><td>1 VP + 最大一组相连同色建筑里每座 1 VP</td></tr>
-<tr><td>天空浴场 The Sky Baths</td><td>⚠️图案待核实（单一来源：<span class="pat">· 麦 · / 石 玻 木 / 砖 · 砖</span>）</td><td>城镇里缺少的每种建筑类型 2 VP</td></tr>
+<tr><td>天空浴场 The Sky Baths</td><td><span class="badge caution">⚠️</span>图案待核实（单一来源：<span class="pat">· 麦 · / 石 玻 木 / 砖 · 砖</span>）</td><td>城镇里缺少的每种建筑类型 2 VP</td></tr>
 <tr><td>星辰织机 The Starloom</td><td><span class="pat">玻 玻 / 木 麦</span></td><td>按完成城镇先后：第 1/2/3/4 名 = 6/3/2/0 VP（同轮完成按较高名次）</td></tr>
 <tr><td>缔约者雕像 Statue of the Bondmaker</td><td><span class="pat">木 石 石 玻 / 麦 · · ·</span></td><td>别人宣布资源时，可以把它放在有小屋的格子上（每格 1 个）；这些资源不能用于建造</td></tr>
 </table></div>
 <p class="meta">中文名为意译，非官方中文版名称。星辰织机、古树神祠的分数表读自低分辨率卡图，基本可信。</p>
 
-<h3 id="tt-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="tt-score">得分方式</h3></summary><div class="chapter-body">
 <ul>
 <li>终局时每座建筑按自己卡上的方式计分（见上表），纪念碑也在终局计分。</li>
 <li>总分 = 各建筑 VP 之和 − 扣分。分数可以是负数。</li>
 <li><b>平手</b>：当建筑大师次数最少者胜 → 空格最少者胜 → 小屋最多者胜 → 仍平则共享胜利。</li>
 </ul>
 
-<h3 id="tt-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="tt-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <ul>
 <li>终局先移除城镇里所有剩余资源方块（<b>仓库上的除外</b>）。</li>
 <li><b>每个空格（没有建筑的格子）−1 VP</b>（建了卡特琳娜大教堂则为 0）。</li>
@@ -214,39 +294,43 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>每轮宣布的资源<b>必须</b>放入城镇——这是被“塞满”的主要来源。</li>
 </ul>
 
-<h3 id="tt-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="tt-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
 <li>银行、工厂上的方块不扣分；只有仓库扣分。</li>
 <li>贸易站当资源用时不被拿走，但一座建筑不能全用贸易站拼，至少要有 1 个真方块。</li>
 <li>不能在资源宣布后、还没把方块真正放进城镇之前就建造。</li>
 <li>“相邻”= 上下左右（不含斜角）；粮仓的“周围 8 格”是特例。</li>
-<li>⚠️ 罗迪纳大陵墓、新月方尖碑、天空浴场的<b>建造图案</b>只有单一数据来源，未用卡图核实。</li>
-<li>⚠️ 成都桌游优选（186996）中文规则页是通用介绍，多处与实际规则不符；Geeky Hobbies 讲解个别描述有误，已按卡面/规则书修正。</li>
+<li><span class="badge caution">⚠️</span> 罗迪纳大陵墓、新月方尖碑、天空浴场的<b>建造图案</b>只有单一数据来源，未用卡图核实。</li>
+<li><span class="badge caution">⚠️</span> 成都桌游优选（186996）中文规则页是通用介绍，多处与实际规则不符；Geeky Hobbies 讲解个别描述有误，已按卡面/规则书修正。</li>
 </ul>
 
-<h3 id="tt-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="tt-src">来源</h3></summary><div class="chapter-body">
 <ul>
 <li>官方规则书 PDF：<a href="https://cdn.1j1ju.com/medias/88/ec/c7-tiny-towns-rulebook.pdf">1j1ju 托管</a>；<a href="https://m102.nthu.edu.tw/~s102061202/Tiny_Towns_Rules_FINAL_print_small.pdf">印刷版</a></li>
 <li>卡图（外链，本页不收录）：<a href="https://ultraboardgames.com/tiny-towns/buildings.php">UltraBoardGames 建筑</a>、<a href="https://ultraboardgames.com/tiny-towns/monuments.php">纪念碑</a></li>
 <li>讲解：<a href="https://www.geekyhobbies.com/how-to-play-tiny-towns-board-game-rules-and-instructions/">Geeky Hobbies</a>（个别有误）</li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 <section class="game" id="sab" data-short="矮人矿坑">
-<h2>矮人矿坑 Saboteur（俊伟称《矮人绝境》）<span class="part">基础版/矿洞逃生完整；2 代简要；20 周年版待补</span></h2>
+<details class="game-panel" open><summary><h2>矮人矿坑 Saboteur（俊伟称《矮人绝境》）<span class="badge part">基础版/矿洞逃生完整；2 代简要；20 周年版待补</span></h2></summary><div class="game-body">
 <div class="secnav"><a href="#sab-info">基本信息</a><a href="#sab-play">核心玩法 / 回合流程（基础版）</a><a href="#sab-rules">卡牌 / 角色规则</a><a href="#sab-score">得分方式</a><a href="#sab-penalty">扣分 / 惩罚规则</a><a href="#sab-faq">常见误区 / 待核实</a><a href="#sab-src">来源</a></div>
 <p class="meta">资料：<code>saboteur/rules-summary.md</code>（依据 AMIGO 官方英文规则书，页码 = PDF 页码）。</p>
 
-<h3 id="sab-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="sab-info">基本信息</h3></summary><div class="chapter-body">
 <ul>
 <li>设计 Frederic Moyersoen；出版 AMIGO（德国）。繁中版新天鹅堡，大陆常称《矮人掘金》。</li>
 <li><b>基础版</b>：3–10 人，8+，约 30 分钟。44 张通道牌、27 张行动牌、28 张金块牌、11 张矮人牌（7 淘金者 Gold Miner + 4 破坏者 Saboteur）。</li>
 <li><b>矿洞逃生 The Dark Cave</b>：独立游戏（不是扩展），2–8 人，10+，约 45 分钟。</li>
 <li><b>Saboteur 2</b>：扩展，2–12 人，需要基础版全部通道牌和行动牌。</li>
-<li><b>20 周年版</b>：合订规则（基础版 + 2 代 + 世锦赛卡 + 迷你扩展），28 页。<span class="todo">待补</span> 摘要文件未展开其内容。</li>
+<li><b>20 周年版</b>：合订规则（基础版 + 2 代 + 世锦赛卡 + 迷你扩展），28 页。<span class="badge todo">待补</span> 摘要文件未展开其内容。</li>
 </ul>
 
-<h3 id="sab-play">核心玩法 / 回合流程（基础版）</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="sab-play">核心玩法 / 回合流程（基础版）</h3></summary><div class="chapter-body">
 <h4>身份分配（v4.0 p.1）</h4>
 <div class="tw"><table><tr><th>人数</th><th>破坏者</th><th>淘金者</th><th>身份牌总数（发完剩 1 张）</th></tr>
 <tr><td>3</td><td>1</td><td>3</td><td>4</td></tr>
@@ -274,7 +358,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li><b>必须和起点之间有连续通路</b>；可以向任何方向延伸。</li>
 </ul>
 
-<h3 id="sab-rules">卡牌 / 角色规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="sab-rules">卡牌 / 角色规则</h3></summary><div class="chapter-body">
 <h4>行动牌（v4.0 p.2）</h4>
 <div class="tw"><table><tr><th>类别</th><th>效果</th></tr>
 <tr><td><b>破坏工具</b>（红标：镐、灯、矿车）</td><td>打在<b>其他玩家</b>面前。面前有破坏牌就<b>不能打通道牌</b>。可以有多张，但同一种只能 1 张（最多 3 张）。</td></tr>
@@ -317,7 +402,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>每人 6 张手牌，牌堆顶 10 张留到下一回合。四选一：打通道、打行动、弃 2 张并移除自己面前 1 张行动牌、放弃并弃 1–3 张。</li>
 </ul>
 
-<h3 id="sab-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="sab-score">得分方式</h3></summary><div class="chapter-body">
 <h4>基础版（以现行 v4.0 为准）</h4>
 <ul>
 <li><b>淘金者胜</b>（连到金矿）：抽<b>等于本回合淘金者人数</b>的金块牌，连通金矿的淘金者拿全部、挑 1 张，剩下<b>逆时针</b>传给下一位淘金者依次各挑 1 张。破坏者 0。若是破坏者亲手连通，仍算淘金者胜，从该破坏者<b>右手边第一位淘金者</b>开始分。</li>
@@ -333,38 +419,42 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <h4>Saboteur 2</h4>
 <ul><li>获胜方按人数分金：1 人 5、2 人各 4、3 人各 3、4 人各 2、5 人以上各 1。老板少拿 1，奸商少拿 2；地质学家拿通道网里可见水晶数。3 回合后金块最多者胜。</li></ul>
 
-<h3 id="sab-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="sab-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <ul>
 <li>面前有破坏工具：不能打通道牌，直到被修好。</li>
 <li>淘金者赢的回合，破坏者什么都拿不到；破坏者赢的回合，淘金者什么都拿不到。</li>
 <li>矿洞逃生：<b>没逃出去的人金块退回公共区</b>；过桥失去 1 张手牌（左手边玩家随机抽走弃掉，本局不补）；进隧道失 1 金块；踩金矿脉须公开身份；怪物攻击失手牌/麻痹/失金块。</li>
 </ul>
 
-<h3 id="sab-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="sab-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
-<li>⚠️ <b>版本差异</b>：2004 年 v1.0 抽“<b>等于玩家人数</b>”的金块牌、淘金者轮流挑完（有人可能多张）；现行 v4.0 与 20 周年版改为“<b>等于淘金者人数</b>”、每人 1 张。<b>以 v4.0 为准。</b></li>
+<li><span class="badge caution">⚠️</span> <b>版本差异</b>：2004 年 v1.0 抽“<b>等于玩家人数</b>”的金块牌、淘金者轮流挑完（有人可能多张）；现行 v4.0 与 20 周年版改为“<b>等于淘金者人数</b>”、每人 1 张。<b>以 v4.0 为准。</b></li>
 <li>修理不能预先打；同一种破坏工具每人面前最多 1 张。</li>
 <li>落石不能移除起点和终点。</li>
-<li>⚠️ 28 张金块牌面值分布、各行动牌张数：v4.0 规则书没写，未补。</li>
-<li>⚠️ 官方中文规则 PDF 没找到。矿洞逃生每族氏族牌构成只是推断。</li>
-<li><span class="todo">待补</span> 20 周年版的世锦赛卡、迷你扩展规则未整理。</li>
+<li><span class="badge caution">⚠️</span> 28 张金块牌面值分布、各行动牌张数：v4.0 规则书没写，未补。</li>
+<li><span class="badge caution">⚠️</span> 官方中文规则 PDF 没找到。矿洞逃生每族氏族牌构成只是推断。</li>
+<li><span class="badge todo">待补</span> 20 周年版的世锦赛卡、迷你扩展规则未整理。</li>
 </ul>
 
-<h3 id="sab-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="sab-src">来源</h3></summary><div class="chapter-body">
 <ul>
 <li><a href="https://blog.amigo-spiele.de/content/ap/rule/04900-GB-AmigoRule.pdf">基础版 AMIGO 官方英文规则 v4.0</a></li>
 <li><a href="https://blog.amigo-spiele.de/content/ap/rule/04980-GB-AmigoRule.pdf">Saboteur 2 官方规则 v3.0</a></li>
 <li><a href="https://blog.amigo-spiele.de/content/ap/rule/02250-GB-AmigoRule.pdf">矿洞逃生 The Dark Cave 官方规则 v1.1</a></li>
 <li><a href="https://blog.amigo-spiele.de/content/ap/rule/02402-GB-AmigoRule.pdf">20 周年版合订规则</a></li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 <section class="game" id="catan" data-short="卡坦岛">
-<h2>卡坦岛 CATAN（基础 + 航海家 + 城市与骑士 + 各 5–6 人扩展）<span class="ok">完整</span></h2>
+<details class="game-panel" open><summary><h2>卡坦岛 CATAN（基础 + 航海家 + 城市与骑士 + 各 5–6 人扩展）<span class="badge ok">完整</span></h2></summary><div class="game-body">
 <div class="secnav"><a href="#catan-info">基本信息</a><a href="#catan-play">核心玩法 / 回合流程（基础版）</a><a href="#catan-rules">卡牌与扩展规则</a><a href="#catan-score">得分方式</a><a href="#catan-penalty">扣分 / 惩罚规则</a><a href="#catan-faq">常见误区 / 待核实</a><a href="#catan-src">来源</a></div>
-<p class="meta">资料：<code>catan/rules-summary.md</code>，依据 catan.com 官方英文规则书 <b>2025 第 6 版</b>（v6.250401）。⚠️ = 未直接核实；🖼 = 数值读自规则书图片。第 6 版改名：Longest Road → <b>最长路线</b>，Year of Plenty（丰收）→ <b>发明</b>，发展卡改称“建造”。</p>
+<p class="meta">资料：<code>catan/rules-summary.md</code>，依据 catan.com 官方英文规则书 <b>2025 第 6 版</b>（v6.250401）。<span class="badge caution">⚠️</span> = 未直接核实；🖼 = 数值读自规则书图片。第 6 版改名：Longest Road → <b>最长路线</b>，Year of Plenty（丰收）→ <b>发明</b>，发展卡改称“建造”。</p>
 
-<h3 id="catan-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="catan-info">基本信息</h3></summary><div class="chapter-body">
 <div class="tw"><table><tr><th>项目</th><th>内容</th></tr>
 <tr><td>正式名称</td><td>CATAN – The Game（旧名 Die Siedler von Catan / The Settlers of Catan）</td></tr>
 <tr><td>设计</td><td>Klaus Teuber（1952–2023）；后续开发 Benjamin Teuber</td></tr>
@@ -373,11 +463,12 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <tr><td>时长/年龄</td><td>官网 60–90 分钟、10+（各来源不一致）</td></tr>
 <tr><td>航海家</td><td>3–4 人、10+、60–120 分钟；需基础版</td></tr>
 <tr><td>城市与骑士</td><td>3–4 人、12+、90–120 分钟；需基础版</td></tr>
-<tr><td>扩展首发年份</td><td>⚠️ 未核实（常见说法航海家 1997、城骑 1998）</td></tr>
+<tr><td>扩展首发年份</td><td><span class="badge caution">⚠️</span> 未核实（常见说法航海家 1997、城骑 1998）</td></tr>
 </table></div>
 <p>基础版配件：19 块地形（森林 4、牧场 4、田地 4、丘陵 3、山脉 3、沙漠 1）、6 块海洋边框（港口印在边框上）、18 个数字片、95 张资源卡（每种 19）、25 张发展卡（骑士 14、道路建设 2、发明 2、垄断 2、胜利点 5）、最长路线/最大军队板；每色 5 村庄、4 城市、15 道路。</p>
 
-<h3 id="catan-play">核心玩法 / 回合流程（基础版）</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="catan-play">核心玩法 / 回合流程（基础版）</h3></summary><div class="chapter-body">
 <h4>开局</h4>
 <ul>
 <li><b>固定开局</b>（新手推荐）：按图摆地形、数字、每人 2 村庄 2 道路；按<b>第二个村庄</b>旁的地形拿起始资源；强盗放沙漠；掷骰最大者先手。</li>
@@ -403,7 +494,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <tr><td>发展卡</td><td>1 羊毛 + 1 小麦 + 1 矿石</td><td>—</td><td>抽完就不能再建</td></tr>
 </table></div>
 
-<h3 id="catan-rules">卡牌与扩展规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="catan-rules">卡牌与扩展规则</h3></summary><div class="chapter-body">
 <h4>发展卡（基础版）</h4>
 <ul>
 <li>背面朝上保管；7 点弃牌不计入，强盗不能抽，不能交易或赠送。</li>
@@ -438,7 +530,7 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <tr><td>8</td><td>卡坦奇观 The Wonders of Catan</td><td>建完自己的奇观；或 ≥10 分且奇观等级领先</td><td>每人 1 个奇观，4 层；不用海盗；每个小岛第一个村庄 +1</td></tr>
 <tr><td>—</td><td>新世界 New World（自由布图）</td><td>12 分</td><td>每个未探索岛第一个村庄 +1；金矿上不要放 6、8</td></tr>
 </table></div>
-<p><b>航海家 5–6 人扩展</b>：需 4 盒（基础 + 基础 5–6 + 航海家 + 航海家 5–6）。用配对玩家规则，Player 2 不能和玩家交易但<b>可以移动 1 艘船</b>。第 2 剧本换成<b>六岛 The Six Islands</b>；布匹 12 个村落；海盗群岛 5 人局不用紫色位置；奇观用 7 块板。⚠️ 各剧本 5–6 人胜利分数规则书只写“与航海家相同，特定剧本另有说明”。</p>
+<p><b>航海家 5–6 人扩展</b>：需 4 盒（基础 + 基础 5–6 + 航海家 + 航海家 5–6）。用配对玩家规则，Player 2 不能和玩家交易但<b>可以移动 1 艘船</b>。第 2 剧本换成<b>六岛 The Six Islands</b>；布匹 12 个村落；海盗群岛 5 人局不用紫色位置；奇观用 7 块板。<span class="badge caution">⚠️</span> 各剧本 5–6 人胜利分数规则书只写“与航海家相同，特定剧本另有说明”。</p>
 
 <h4>城市与骑士 Cities &amp; Knights</h4>
 <ul>
@@ -465,7 +557,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li><b>城骑 5–6 人扩展</b>：需 4 盒。用基础 5–6 数字片；加 18 张商品卡；配对玩家规则，Player 2 不能和玩家交易，但可与银行交易、建造、骑士行动、打进步卡。仍 <b>13 分</b>。</li>
 </ul>
 
-<h3 id="catan-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="catan-score">得分方式</h3></summary><div class="chapter-body">
 <div class="tw"><table><tr><th>来源</th><th>基础版（10 分胜）</th><th>城市与骑士（13 分胜）</th></tr>
 <tr><td>村庄 / 城市</td><td>1 / 2</td><td>1 / 2</td></tr>
 <tr><td>最长路线（≥5 条连续道路，被超过即转手）</td><td>2</td><td>2</td></tr>
@@ -479,7 +572,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <ul><li>在<b>自己的回合</b>任何时刻达到目标分立即获胜。航海家按剧本（见上表）；城骑 + 航海家为剧本分 +2。</li>
 <li>最长路线平手不转手；若被截断导致没人符合条件，板回供应区，等有人<b>唯一</b>拥有 ≥5 条时再给。</li></ul>
 
-<h3 id="catan-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="catan-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <ul>
 <li><b>掷 7</b>：手牌多于 7 张弃一半（城骑：资源 + 商品计入，每道城墙上限 +2）；被强盗/海盗抽 1 张；强盗所在地形不产出。</li>
 <li><b>资源不够分</b>：该资源谁都拿不到（只涉及一人则全给他）。</li>
@@ -488,29 +582,32 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>进步卡超过 4 张：不在自己回合时立即弃到 4；在自己回合时行动阶段结束前弃到 4。</li>
 </ul>
 
-<h3 id="catan-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="catan-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
 <li>发展卡每回合最多 1 张，且不能打当回合建的（胜利点卡除外：够分时可当回合翻）。</li>
-<li>5–6 人扩展 2025 版用“配对玩家”，<b>不再有特别建造阶段</b>；Player 2 不能和玩家交易。⚠️ 5–6 人局 7 点弃牌门槛规则书没另定，按基础规则。</li>
+<li>5–6 人扩展 2025 版用“配对玩家”，<b>不再有特别建造阶段</b>；Player 2 不能和玩家交易。<span class="badge caution">⚠️</span> 5–6 人局 7 点弃牌门槛规则书没另定，按基础规则。</li>
 <li>航海家：船不能直接接在道路上，需经过建筑。</li>
 <li>城骑：基础版发展卡和最大军队<b>都不用</b>。</li>
-<li>⚠️ 第 6 版港口具体数量/分布、航海家各剧本配件表、野蛮人航道格数、事件骰各面分布：规则书正文无文字，未转录。</li>
-<li>⚠️ 官方中文规则书 PDF 未找到；catan.com 城骑页面的描述（骑士为圆片）是 KOSMOS 德版，与英文第 6 版不同，以规则书为准。</li>
+<li><span class="badge caution">⚠️</span> 第 6 版港口具体数量/分布、航海家各剧本配件表、野蛮人航道格数、事件骰各面分布：规则书正文无文字，未转录。</li>
+<li><span class="badge caution">⚠️</span> 官方中文规则书 PDF 未找到；catan.com 城骑页面的描述（骑士为圆片）是 KOSMOS 德版，与英文第 6 版不同，以规则书为准。</li>
 </ul>
 
-<h3 id="catan-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="catan-src">来源</h3></summary><div class="chapter-body">
 <ul>
 <li><a href="https://www.catan.com/understand-catan/game-rules">catan.com 官方规则下载页</a>（含基础、5–6 人、航海家、城骑及其 5–6 人扩展全部 PDF）</li>
 <li>产品页：<a href="https://www.catan.com/catan">基础版</a> · <a href="https://www.catan.com/seafarers">航海家</a> · <a href="https://www.catan.com/cities-knights">城市与骑士</a> · <a href="https://www.catan.com/explore-catan/catan-basegame-expansions/play-catan-5-6-players">5–6 人</a></li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 <section class="game" id="fcm" data-short="快餐连锁大亨">
-<h2>快餐连锁大亨 Food Chain Magnate（「肥肠面」）+ 扩展《番身机制与茄妙构想》<span class="ok">完整</span></h2>
+<details class="game-panel" open><summary><h2>快餐连锁大亨 Food Chain Magnate（「肥肠面」）+ 扩展《番身机制与茄妙构想》<span class="badge ok">完整</span></h2></summary><div class="game-body">
 <div class="secnav"><a href="#fcm-info">基本信息</a><a href="#fcm-play">核心玩法 / 回合流程（7 个阶段）</a><a href="#fcm-rules">里程碑、员工与扩展 17 模块</a><a href="#fcm-score">得分方式</a><a href="#fcm-penalty">扣分 / 惩罚规则</a><a href="#fcm-faq">常见误区 / 待核实</a><a href="#fcm-src">来源</a></div>
 <p class="meta">资料：<code>food-chain-magnate/rules-summary.md</code>、<code>expansion-summary.md</code>。基础版页码为<b>印刷页码</b>（PDF 页 = 印刷页 + 1）；扩展页码 = PDF 页 = 印刷页。</p>
 
-<h3 id="fcm-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="fcm-info">基本信息</h3></summary><div class="chapter-body">
 <ul>
 <li>设计 Jeroen Doumen、Joris Wiersinga；出版 Splotter Spellen（荷兰），2015。2–5 人，2–4 小时。简中版：一刻馆。</li>
 <li>扩展 <b>The Ketchup Mechanism &amp; Other Ideas</b>（2019 首发），<b>17 个模块</b>可单用可组合；必须搭配基础版；2–6 人。</li>
@@ -529,7 +626,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>每人暗选 1 张储备卡面朝下放银行旁，其余 2 张不看弃掉。</li>
 </ul>
 
-<h3 id="fcm-play">核心玩法 / 回合流程（7 个阶段）</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="fcm-play">核心玩法 / 回合流程（7 个阶段）</h3></summary><div class="chapter-body">
 <ol>
 <li><b>重组</b>：同时暗选本回合上班的员工并翻开（在岗）；其余“在海滩”（不能用，可被培训，照付工资）。第 1 回合只有 CEO。在岗员工排<b>金字塔</b>：CEO 3 个下属格；经理（黑卡）有 2–10 格（管理培训生 2、初级副总裁 3、副总裁 4、高级副总裁 5、执行副总裁 10），经理下面只能挂普通员工。放不下 → 除 CEO 外全部进海滩。</li>
 <li><b>定顺位</b>：<b>空格最多</b>者先选顺位（「首次飞机广告」+2 空格）；平手按上回合顺位。</li>
@@ -553,7 +651,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li><b>第二次</b>：游戏结束；完成本次晚餐（欠款记账照付），<b>本回合不发工资</b>。</li>
 </ul>
 
-<h3 id="fcm-rules">里程碑、员工与扩展 17 模块</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="fcm-rules">里程碑、员工与扩展 17 模块</h3></summary><div class="chapter-body">
 <h4>基础版里程碑（任何时刻满足立即获得，全局持续，不想要也得用）</h4>
 <div class="tw"><table><tr><th>里程碑</th><th>效果</th></tr>
 <tr><td>首次放广告牌</td><td>营销员不再付工资；之后你的广告全部<b>永久</b>，对应营销员整局不可再用</td></tr>
@@ -609,14 +708,16 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 </ul>
 <p class="meta">官方推荐：先单独试「新里程碑」，再试「咖啡」。组合例：韩国城（新城区+泡菜）、夜生活（新里程碑+夜班经理）、亚洲融合（寿司+泡菜+面条+番茄酱）。多种食物（有花园房屋）优先顺序：泡菜+寿司 &gt; 泡菜+正确组合 &gt; 泡菜+面条 &gt; 寿司 &gt; 正确组合 &gt; 面条。</p>
 
-<h3 id="fcm-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="fcm-score">得分方式</h3></summary><div class="chapter-body">
 <ul>
 <li>没有分数：银行第二次破产后，<b>现金最多者胜</b>；平手顺位靠前者胜。</li>
 <li>收入例：卖 1 汉堡 + 2 啤酒到有花园房屋，有汉堡营销里程碑和奢侈品经理 → $45 + 2×$40 = $125。</li>
 <li>入门局（p.14）：不用储备卡，银行每人 $75，去掉全部里程碑，不付工资，银行破产一次即结束。</li>
 </ul>
 
-<h3 id="fcm-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="fcm-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <ul>
 <li><b>工资</b>：每张带工资标记的卡 $5/回合（在岗 + 海滩 + 忙碌营销员）。</li>
 <li>招聘经理/HR 总监<b>未用完的招聘次数每次 −$5 工资</b>（可抵扣）；所有折扣必须使用；最低 $0。</li>
@@ -626,31 +727,34 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>摆不成金字塔：本回合只用 CEO。</li>
 </ul>
 
-<h3 id="fcm-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="fcm-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
 <li>需求数量不影响距离比较；里程碑奖励（+$5）不改变单价，花园不翻倍奖励。</li>
 <li>在海滩的员工也要付工资。广告不能提前结束。</li>
-<li>⚠️ 「星尘区 = 新城区」「提案人 = 说客」是根据功能和名单排除法推断（把握中高/高）；「提案人」译名无公开来源。</li>
-<li>⚠️ 186996.com（成都桌游优选）中文规则页/扩展介绍与官方规则明显不符，<b>不要参考</b>。</li>
-<li>⚠️ 一刻馆官方中文规则 PDF 未找到。Lucky Duck Deluxe Edition 相关内容未核实，与一刻馆盒子无关。</li>
+<li><span class="badge caution">⚠️</span> 「星尘区 = 新城区」「提案人 = 说客」是根据功能和名单排除法推断（把握中高/高）；「提案人」译名无公开来源。</li>
+<li><span class="badge caution">⚠️</span> 186996.com（成都桌游优选）中文规则页/扩展介绍与官方规则明显不符，<b>不要参考</b>。</li>
+<li><span class="badge caution">⚠️</span> 一刻馆官方中文规则 PDF 未找到。Lucky Duck Deluxe Edition 相关内容未核实，与一刻馆盒子无关。</li>
 </ul>
 
-<h3 id="fcm-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="fcm-src">来源</h3></summary><div class="chapter-body">
 <ul>
 <li><a href="https://splottercon.com/rules-fcm/">基础版官方英文规则（Splotter Con）</a></li>
 <li><a href="https://splottercon.com/rules-fcm-ketchup/">扩展官方英文规则（Splotter Con）</a></li>
 <li><a href="https://www.splottershop.com/products/the-ketchup-mechanism-and-other-ideas">Splotter 商店：The Ketchup Mechanism &amp; Other Ideas</a></li>
 <li><a href="https://zhongchou.modian.com/item/97936.html">一刻馆摩点众筹页</a></li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 <section class="game" id="mk" data-short="骰子街">
-<h2>骰子街 Machi Koro（俊伟叫它《投资街》，对应关系为推断）+ 港口扩充 Harbor <span class="ok">完整</span></h2>
+<details class="game-panel" open><summary><h2>骰子街 Machi Koro（俊伟叫它《投资街》，对应关系为推断）+ 港口扩充 Harbor <span class="badge ok">完整</span></h2></summary><div class="game-body">
 <div class="secnav"><a href="#mk-info">基本信息</a><a href="#mk-play">核心玩法 / 回合流程</a><a href="#mk-rules">建筑 / 卡牌规则</a><a href="#mk-score">得分方式</a><a href="#mk-penalty">扣分 / 惩罚规则</a><a href="#mk-faq">常见误区 / 待核实</a><a href="#mk-src">来源</a></div>
 <p class="meta">资料：<code>machi-koro/rules-summary.md</code>。依据 GoKids 繁中基础版/港口规则【中基】【中港】、2014 英文版【英基】【英港】，2019 Pandasaurus 5 周年版【英扩】仅作对照。页码 = PDF 页。</p>
-<div class="warn">⚠️ 市面上找不到名为《投资街》的桌游。带「港口扩展」、玩法是「掷骰→收钱→投资盖建筑」的是《骰子街》及其港口扩充，因此判定为这款（<b>推断</b>）。如果盒子上没有「骰子街 / Machi Koro / 港口 / 机场 / 小麦田 / 面包店」，请拍盒子封面背面再确认。</div>
+<div class="warn"><span class="badge caution">⚠️</span> 市面上找不到名为《投资街》的桌游。带「港口扩展」、玩法是「掷骰→收钱→投资盖建筑」的是《骰子街》及其港口扩充，因此判定为这款（<b>推断</b>）。如果盒子上没有「骰子街 / Machi Koro / 港口 / 机场 / 小麦田 / 面包店」，请拍盒子封面背面再确认。</div>
 
-<h3 id="mk-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="mk-info">基本信息</h3></summary><div class="chapter-body">
 <div class="tw"><table><tr><th>项目</th><th>基础版</th><th>加港口扩充</th></tr>
 <tr><td>人数</td><td>2–4 人</td><td>2–5 人</td></tr>
 <tr><td>时长</td><td>约 30 分钟</td><td>30–40 分钟</td></tr>
@@ -661,7 +765,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 </table></div>
 <p>基础版配件：108 张卡（起始 24：小麦田×4、面包店×4、四种地标各 4；补给 84），钱币 78 枚，骰子 2 颗。</p>
 
-<h3 id="mk-play">核心玩法 / 回合流程</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="mk-play">核心玩法 / 回合流程</h3></summary><div class="chapter-body">
 <h4>准备</h4>
 <ol>
 <li>每人面前：小麦田、面包店各 1；4 张地标翻到「施工中」灰色面。</li>
@@ -691,7 +796,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>新时机：<b>港口</b>（掷骰后，自己掷 ≥10 可选 +2，对全桌生效）→ 收入 → <b>市政府</b>（收入后建设前，0 元则拿 1 元）→ 建设 → <b>机场</b>（回合结束时本回合没建，拿 10 元）。</li>
 </ul>
 
-<h3 id="mk-rules">建筑 / 卡牌规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="mk-rules">建筑 / 卡牌规则</h3></summary><div class="chapter-body">
 <h4>基础版（点数｜费用｜效果）</h4>
 <div class="tw"><table><tr><th>建筑</th><th>点数</th><th>费用</th><th>效果</th></tr>
 <tr><th colspan="4">起始地标</th></tr>
@@ -741,42 +847,47 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <tr><td>国税局</td><td>8–9</td><td>4</td><td>拥有 <b>10 元或以上</b>的玩家把一半现金（向下取整）给你</td></tr>
 </table></div>
 
-<h3 id="mk-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="mk-score">得分方式</h3></summary><div class="chapter-body">
 <ul>
 <li>没有分数：第一个把自己<b>全部地标</b>（基础 4 座 / 港口 6 座）完成的玩家<b>立刻获胜</b>。</li>
 </ul>
 
-<h3 id="mk-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="mk-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <ul>
 <li>别人掷出你红色建筑的点数时，<b>掷骰者要付钱</b>；紫色建筑从其他玩家处拿钱（体育馆、电视台、出版社、国税局）。</li>
 <li><b>钱不够付</b>：有多少付多少，不会变负数，对方也不补；同时欠多人时<b>按逆时针顺序</b>依次付。例：A 掷 3，欠 C 2 元、B 3 元，A 只有 3 元 → 先付 C 2 元，剩 1 元给 B，其余作废。</li>
 <li>国税局：21 元 → 付 10 留 11。</li>
 </ul>
 
-<h3 id="mk-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="mk-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
 <li>12–14 点只能靠 2 颗骰掷 10–12 再用港口 +2 得到，所以鲔鱼船、食物仓储实际依赖港口（推论）。</li>
 <li>港口 +2 全桌生效：别人的蓝/红建筑也按 +2 后的点数结算。</li>
 <li>购物中心 + 花店：每片花田给花店 2 元。例：购物中心 + 3 片花田 + 2 间花店 → 12 元。</li>
 <li>鲔鱼船：无论几艘只掷一次，每艘按同一结果；这次掷骰不触发其他建筑、不算主题乐园对子。例：3 艘、掷 8 → 24 元，其他盖了港口的玩家每艘也拿 8 元。</li>
 <li>主题乐园只有掷 2 颗骰才可能出对子；“一次最多一个额外回合”与“广播电台重掷用同样数量骰子、只算第二次”来自 Yucata 说明，<b>非官方规则书原文</b>。</li>
-<li>⚠️ <b>版本差异</b>：以 2014–2016 旧版为准。2019 5 周年版把市政府改为 Bonus 卡、扩充内容物不同、个别卡值可能有改动（未逐张比对）——<b>以自己卡面为准</b>。5 周年版把随机市场称为 Variable Supply，也可用于基础版。</li>
-<li>⚠️ 简中（游戏大陆）版本规则书未找到。</li>
+<li><span class="badge caution">⚠️</span> <b>版本差异</b>：以 2014–2016 旧版为准。2019 5 周年版把市政府改为 Bonus 卡、扩充内容物不同、个别卡值可能有改动（未逐张比对）——<b>以自己卡面为准</b>。5 周年版把随机市场称为 Variable Supply，也可用于基础版。</li>
+<li><span class="badge caution">⚠️</span> 简中（游戏大陆）版本规则书未找到。</li>
 </ul>
 
-<h3 id="mk-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="mk-src">来源</h3></summary><div class="chapter-body">
 <ul>
 <li><a href="https://boardgamegeek.com/boardgame/143884">BGG：Machi Koro (#143884)</a> · <a href="https://boardgamegeek.com/boardgame/143789">BGG：Machi Koro: Harbor (#143789)</a></li>
 <li>规则书：GoKids 繁中基础版/港口扩充、2014 IDW 英文版、Pandasaurus 5 周年版扩充合集（本地存档，本页不收录 PDF）</li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 <section class="game" id="ng" data-short="北境之地">
-<h2>北境之地：人迹罕至 Northgard: Uncharted Lands <span class="ok">完整（扩展仅简述）</span></h2>
+<details class="game-panel" open><summary><h2>北境之地：人迹罕至 Northgard: Uncharted Lands <span class="badge ok">完整（扩展仅简述）</span></h2></summary><div class="game-body">
 <div class="secnav"><a href="#ng-info">基本信息</a><a href="#ng-play">核心玩法 / 回合流程</a><a href="#ng-rules">行动卡、建筑、战斗与部族</a><a href="#ng-score">得分方式</a><a href="#ng-penalty">扣分 / 惩罚规则</a><a href="#ng-faq">常见误区 / 待核实</a><a href="#ng-src">来源</a></div>
 <p class="meta">资料：<code>northgard/rules-summary.md</code>，依据官方英文规则书（24 页，页码 = PDF 页 = 印刷页），图标数值已对照渲染页面。</p>
 
-<h3 id="ng-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="ng-info">基本信息</h3></summary><div class="chapter-body">
 <ul>
 <li>中文版：拾刻桌游引进（摩点众筹 2023-02-08 结束）。英文 2022，设计 Adrian Dinu，美术 Grosnez，发行 Studio H（Hachette Boardgames）。改编自 Shiro Games 的同名即时战略电子游戏。</li>
 <li>2–5 人；时长 60–90 分钟（Hachette）/ 45–90（BGG）/ 每人 20 分钟（官网）；14+。类型：4X、牌库构筑、板块拼接、骰子战斗、非对称部族。</li>
@@ -789,7 +900,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>普通边界（白色细虚线）；崎岖边界（黄色粗虚线，跨越多花 1 步）。</li>
 </ul>
 
-<h3 id="ng-play">核心玩法 / 回合流程</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="ng-play">核心玩法 / 回合流程</h3></summary><div class="chapter-body">
 <h4>准备（p.4–5）</h4>
 <ol>
 <li>发展牌堆：早期每人 2 张、进阶每人 4 张，早期叠在上面。随机抽与人数相同的成就卡正面朝上。</li>
@@ -816,7 +928,8 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li><b>年末</b>：检查结束；地图上没单位的玩家可在中立领地放 3 个新单位（东山再起）；年份前进。</li>
 </ol>
 
-<h3 id="ng-rules">行动卡、建筑、战斗与部族</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="ng-rules">行动卡、建筑、战斗与部族</h3></summary><div class="chapter-body">
 <p class="meta">牌面文字与规则书冲突时以牌面为准。起始牌有招募、探索、移动、建造；“宴会 Feast”是万能牌。</p>
 <ul>
 <li><b>招募</b>：最多放卡面数量的单位，只能放自己控制的领地；每座训练营在该领地多放 1 个。地图上没单位时可放中立领地。</li>
@@ -864,17 +977,19 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <ul>
 <li>长局：10 年，发展牌每人早期 3、进阶 6，取消提前获胜。</li>
 <li>组队（恰好 4 人 2v2）：可商量不能看手牌；队友 1:1 交换资源；声望合计；提前获胜改为全队 5 块封闭领地且每块有大型建筑。</li>
-<li>扩展 Warchiefs（领袖）、Wilderness（荒野）：仅简述，规则书未下载 <span class="todo">待补</span>。</li>
+<li>扩展 Warchiefs（领袖）、Wilderness（荒野）：仅简述，规则书未下载 <span class="badge todo">待补</span>。</li>
 </ul>
 
-<h3 id="ng-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="ng-score">得分方式</h3></summary><div class="chapter-body">
 <ul>
 <li><b>提前结束</b>：年末有人控制 ≥3 块封闭领地且每块有大型建筑（王之祭坛/锻造厂/要塞）即获胜；同时达成依次比声望 → 领地数 → 单位数 → 建筑数。此条件优先于第 7 年比较。</li>
 <li><b>第 7 年结束</b>：总声望 = 声望标记 + 剩余资源每 3 个 1 分 + 发展牌/成就卡上的声望 − 每张动乱卡 5 分。平手比领地数 → 单位数 → 建筑数。</li>
 <li>声望来源：探索封闭领地（按板块数）、收获时封闭领地（1 或 2）、王之祭坛（每座每年 3）、牌、剩余资源、打倒生物。</li>
 </ul>
 
-<h3 id="ng-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="ng-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <div class="tw"><table><tr><th>地图上单位数</th><th>1–3</th><th>4–6</th><th>7–9</th><th>10–12</th><th>13+</th></tr>
 <tr><td>冬季花费</td><td>0</td><td>1 食物</td><td>2 食物</td><td>3 食物 + 1 木材</td><td>4 食物 + 2 木材</td></tr></table></div>
 <ul>
@@ -883,95 +998,135 @@ footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-
 <li>生物：尸鬼让你移除单位；狼/棕熊封锁领地产出或行动。</li>
 </ul>
 
-<h3 id="ng-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="ng-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
 <li>探索不能引发战斗；封闭<b>别人</b>的领地你不得分。</li>
 <li>平手防守方胜，但伤亡 ≥ 单位数直接判负。</li>
 <li>Pass 时选的发展牌放在<b>抽牌堆顶</b>，下一年一定抽到。</li>
 <li>训练营只对招募行动或牌面写着 recruit 的效果有效。</li>
-<li>⚠️ 官方中文规则书 PDF 未找到；扩展规则未下载。</li>
+<li><span class="badge caution">⚠️</span> 官方中文规则书 PDF 未找到；扩展规则未下载。</li>
 </ul>
 
-<h3 id="ng-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="ng-src">来源</h3></summary><div class="chapter-body">
 <ul>
 <li><a href="https://northgard-boardgame.com/rulebooks/">官网规则书页（英/德/法）</a></li>
 <li><a href="https://www.hachetteboardgames.com/products/northgard-uncharted-lands">Hachette 产品页</a> · <a href="https://boardgamegeek.com/boardgame/274124">BGG #274124</a></li>
 <li><a href="https://zhongchou.modian.com/item/124590.html">拾刻摩点众筹页</a> · <a href="https://www.gcores.com/articles/161586">机核介绍</a> · <a href="https://www.hachetteboardgames.com/blogs/infos/two-northgard-expansions">两个扩展介绍</a></li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 <section class="game" id="pm5" data-short="现在下午五点">
-<h2>现在下午五点 It's 5pm（イッツファイブピーエム）<span class="part">完整摘要，但未取得官方 PDF</span></h2>
-<div class="secnav"><a href="#pm5-info">基本信息</a><a href="#pm5-play">核心玩法 / 回合流程</a><a href="#pm5-rules">卡牌规则（目的卡 / 单人）</a><a href="#pm5-score">得分方式</a><a href="#pm5-penalty">扣分 / 惩罚规则</a><a href="#pm5-faq">常见误区 / 待核实</a><a href="#pm5-src">来源</a></div>
-<div class="warn">⚠️ <b>官方规则书 PDF 没能下载</b>（出版社网站 502、存档站连不上、BGG 需登录）。本节根据搜索引擎索引里的官方英文规则书文本整理，并用出版社商品页与日文玩家资料交叉核对。<b>没有页码</b>，只标章节名。每条标有可信度：<br>
-<b>【A】</b>看到了官方规则书原文片段　<b>【B】</b>只有搜索引擎对规则书的摘要（“多次一致”另注）　<b>【C】</b>只有出版社商品页或日文玩家资料。没出现过的数字写“未知”。</div>
+<details class="game-panel" open><summary><h2>现在下午五点 It's 5pm（イッツファイブピーエム）<span class="badge ok">完整（已核对官方规则书）</span></h2></summary><div class="game-body">
+<div class="secnav"><a href="#pm5-info">基本信息</a><a href="#pm5-play">核心玩法 / 回合流程</a><a href="#pm5-rules">店铺 / 目的卡 / 单人</a><a href="#pm5-score">得分方式</a><a href="#pm5-penalty">扣分 / 惩罚规则</a><a href="#pm5-faq">常见误区 / 待核实</a><a href="#pm5-src">来源</a></div>
+<div class="hl">✅ <b>2026-10-22 已按官方英文规则书 PDF 逐条核对</b>（TACTICAL GAMES 2021，2 大页）。页码：<b>p1</b> = 第 1–7 节（概述、配件、目标、准备、流程、补时间、放街道卡），<b>p2</b> = 第 8.3–13 节（定休日、玩家行动、目的卡、终局、单人）。<br>
+<b>【A】</b>规则书正文原文　<b>【A·图】</b>从规则书插图读出的数字（不是正文文字）　<b>【C】</b>只有出版社页或日文资料。</div>
 
-<h3 id="pm5-info">基本信息</h3>
+<details class="chapter"><summary><h3 id="pm5-info">基本信息</h3></summary><div class="chapter-body">
 <ul>
-<li>1–4 人，20–40 分钟，14+；设计戸塚中央，美术鈴木ヨウタ，出版 TACTICAL GAMES（日本），2021 年 4 月 Game Market 春季展先行发售。中文版：旭翼文化。【A/C】</li>
-<li>配件【A】：8 个店铺板块（电影院、酒吧、桌游咖啡馆、图书馆、咖啡店、百货店、便利店、健身房各 1）、起始玩家标记、8 个定休日板块、星期板、41 个快乐标记（1×20、5×10、10×5、30×4、50×2）、4 张家卡。</li>
-<li>配件【C】：中央都市卡 1、初始街道卡 8（咖啡店、酒吧各 2，便利店 4）、街道卡 24、目的卡 20、棋子 4、速查卡 4、个人板 4、金钱/时间标记 8。</li>
-<li><b>目标</b>【A】：边建城边在早上和晚上逛街，花钱和时间光顾店铺收集<b>快乐</b>；周一到周五共 5 天，周五结束快乐最多者胜。</li>
+<li>1–4 人，20–40 分钟，14+；设计戸塚中央，美术鈴木ヨウタ，出版 TACTICAL GAMES（日本）【A p1/p2】；2021 年 4 月 Game Market 春季展先行发售【C】。中文版：旭翼文化。</li>
+<li>配件【A p1 §2】：家卡 4、中央都市卡 1、初始街道卡 8（咖啡店 2、酒吧 2、便利店 4）、街道卡 24、目的卡 20、定休日板块 8、店铺板块 8、星期板 1、起始玩家标记 1、快乐标记 41（1×20、5×10、10×5、30×4、50×2）、棋子 4、时间/金钱标记 8、速查卡 4、个人板 4。</li>
+<li><b>目标</b>【A p1 §3】：边建城边在早上和晚上逛街，花钱和时间光顾店铺收集<b>快乐</b>；周一到周五共 5 天，周五结束时快乐最多者胜。</li>
 </ul>
 
-<h3 id="pm5-play">核心玩法 / 回合流程</h3>
-<h4>准备（"4. Setup"）</h4>
+</div></details>
+<details class="chapter"><summary><h3 id="pm5-play">核心玩法 / 回合流程</h3></summary><div class="chapter-body">
+<h4>准备【A p1 §4】</h4>
 <ol>
-<li>【A】每人拿家卡、棋子、时间/金钱标记、个人板、速查卡。时间标记放 <b>0</b>，金钱放 <b>3</b>。</li>
-<li>【A】8 个店铺板块随机翻开按周一到周五放上星期板，剩下的放回盒子。</li>
-<li>【A】每人随机 1 张酒吧/咖啡店初始卡 + 1 张便利店初始卡。【B】中央都市放中间，每人把家卡和 2 张初始卡排成一列接上（屋顶朝自己）。【C】顺序：中央 → 咖啡店或酒吧 → 便利店 → 家。</li>
-<li>【A】棋子放家里；每人抽 2 张街道卡作暗手牌。【B】目的卡每人发 5 留 3，正面朝上。</li>
-<li>【A】最近一次在城市里散步的人当起始玩家。</li>
+<li>每人拿家卡、棋子、时间/金钱标记 2、个人板、速查卡。时间标记放 <b>0</b>，金钱放 <b>3</b>。</li>
+<li>8 个店铺板块随机翻开，按周一到周五放上星期板（= 每天的定休店），剩 3 个放回盒子。</li>
+<li>每人随机 1 张酒吧/咖啡店初始卡 + 1 张便利店初始卡。</li>
+<li>中央都市放中间；每人排成一列：<b>家 — 便利店 — 酒吧/咖啡店 — 中央都市</b>，家卡屋顶朝中央。4 人 7×7；3 人 7×5，无主家卡贴在中央第 4 边；2 人 5×5，2 张无主家卡贴在中央另外两边。</li>
+<li>棋子放家里；每人抽 2 张街道卡作暗手牌；目的卡每人发 5 留 3，正面朝上。</li>
+<li>最近一次在城市里散步的人当起始玩家。快乐标记和定休日板块作供应区，数量不限。</li>
 </ol>
-<h4>每天【A】：① 补时间 → ② 放街道卡 → ③ 放定休日 → ④ 玩家行动 → ⑤ 准备下一天</h4>
+<h4>每天【A p1 §5】：① 补时间 → ② 放街道卡 → ③ 放定休日 → ④ 玩家行动 → ⑤ 准备下一天</h4>
 <ul>
-<li><b>① 补时间</b>【A】：时间标记移到当天对应值。<b>周一是 9</b>；周二到周五：<b>未知</b>（【C】说越近周末越多）。</li>
-<li><b>② 放街道卡</b>【A】：顺时针每人打 1 张：至少一条边接上已有卡、方向随意、在网格内（4 人 7×7，3 人 7×5，2 人 5×5，家卡在最外端）。放完抽 1 张保持 2 张；<b>周五不抽</b>。</li>
-<li><b>③ 定休日</b>【A】：星期板上当天那家店，在城里所有这种店上放定休日板块，当天不能光顾。</li>
-<li><b>④-1 早上</b>【A】：顺时针一人走完再下一人，从家走到中央都市（前一晚住别人家则从那里出发）。每移到下一张卡耗 1 小时，最短 3 小时；只能沿道路，不能斜走；弯道不能走向与来路不相连的方向；不能走出城市；<b>同一时段同一张卡不能经过两次</b>。每到一张卡可光顾卡上所有营业中的店（每家一次），按图标付钱和/或时间拿快乐；<b>公园</b>免费 +1 快乐。</li>
-<li>营业时段【A】：分只早上、早晚都开、只晚上三种，以卡面图标为准（具体分类未能确认）。【C】早上：咖啡店、图书馆、公园、健身房、便利店、百货店；晚上：桌游咖啡馆、电影院、酒吧、健身房、便利店。</li>
-<li><b>④-2 在中央都市赚钱</b>【A】：同时进行、可跳过；按速查卡比率把时间换钱（比率表<b>未知</b>）；一次最多 10 金；金钱上限 18；记得留 ≥3 小时回家。</li>
-<li><b>④-3 晚上</b>【A】：从中央都市回自己家或别人家，规则同早上。别人回你家，每有一人你得 1 快乐；1–3 人局不能回无主的家。</li>
-<li><b>④-4 在家赚钱</b>【A】：剩余时间全部换钱，时间不能留到第二天（10/18 上限同样适用，推断）。</li>
-<li><b>⑤ 准备下一天</b>【B】：起始玩家标记左传；翻面今天的店铺板块，收回定休日板块。</li>
+<li><b>① 补时间</b>【A p1 §6】：时间标记直接移到当天位置。</li>
+</ul>
+<div class="tw"><table>
+<tr><th>星期</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th></tr>
+<tr><td>时间</td><td><b>9</b>【A】</td><td>11</td><td>13</td><td>15</td><td>17</td></tr>
+</table></div>
+<p>周二–周五是【A·图 p1】：正文只写了周一 = 9；其余是从个人板插图读出来的（相邻两天的星期标记间隔两格，<span class="badge caution">⚠️</span> 请以实物个人板为准）。</p>
+<ul>
+<li><b>② 放街道卡</b>【A p1 §7】：顺时针每人打 1 张：至少一条边接上已有卡、方向随意、在网格内（家卡在最外端）。放完抽 1 张保持 2 张；<b>周五不抽</b>。</li>
+<li><b>③ 定休日</b>【A p2 §8.3】：星期板上当天那家店，在城里所有这种店上放定休日板块，当天不能光顾。</li>
+<li><b>④-1 早上</b>【A p2 行动 1】：顺时针一人走完再下一人，从家走到中央都市（前一晚住别人家则从那里出发）。每移到下一张卡耗 1 小时，最短 3 小时；只能沿道路，不能斜走；弯道不能走向与来路不相连的方向；不能走出城市；<b>同一时段同一张卡绝不能经过两次</b>。每到一张卡可光顾卡上所有营业中的店（每家一次，顺序随意），付钱和/或时间拿快乐；<b>公园</b>免费，走到就 +1。</li>
+<li><b>④-2 在中央都市赚钱</b>【A p2 行动 2】：同时进行、可跳过；按下表把时间换钱；一次最多 10 金；金钱上限 18；记得留 ≥3 小时回家。</li>
+</ul>
+<div class="tw"><table>
+<tr><th>花的时间</th><th>1</th><th>2</th><th>3</th><th>4 以上</th></tr>
+<tr><td>得到金钱</td><td>2</td><td>5</td><td>7</td><td>10</td></tr>
+</table></div>
+<p>兑换表【A·图 p1 速查卡（日文 お金を稼ぐ）】，中央都市和家里都用这张表。</p>
+<ul>
+<li><b>④-3 晚上</b>【A p2 行动 3】：从中央都市回自己家或别人家，规则同早上。别人住你家，每人让你得 1 快乐；1–3 人局不能回无主的家。</li>
+<li><b>④-4 在家赚钱</b>【A p2 行动 4】：剩余时间<b>全部</b>按同一张表换钱，时间不能留到第二天；10 金/18 金上限同样适用。</li>
+<li><b>⑤ 准备下一天</b>【A p2 §10】：起始玩家标记左传；今天的店铺板块翻面；收回所有定休日板块。</li>
 </ul>
 
-<h3 id="pm5-rules">卡牌规则（目的卡 / 单人）</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="pm5-rules">店铺 / 目的卡 / 单人</h3></summary><div class="chapter-body">
+<p><b>店铺营业时段与价格</b>【A p2 §9 图例】</p>
+<div class="tw"><table>
+<tr><th>营业</th><th>店铺</th><th>快乐</th><th>花费</th></tr>
+<tr><td rowspan="3">只早上</td><td>公园</td><td>1</td><td>免费</td></tr>
+<tr><td>咖啡店</td><td>2</td><td>2 金</td></tr>
+<tr><td>图书馆</td><td>2</td><td>1 时间</td></tr>
+<tr><td rowspan="3">早晚都开</td><td>便利店</td><td>1</td><td>1 金</td></tr>
+<tr><td>健身房</td><td>4</td><td>4 金</td></tr>
+<tr><td>百货店</td><td>7</td><td>6 金</td></tr>
+<tr><td rowspan="3">只晚上</td><td>酒吧</td><td>3</td><td>3 金</td></tr>
+<tr><td>电影院</td><td>6</td><td>3 金 + 1 时间</td></tr>
+<tr><td>桌游咖啡馆</td><td>7</td><td>2 金 + 2 时间</td></tr>
+</table></div>
+<p>规则书所有图例里同类店数值都一样，但正文没写“所有卡相同”，以卡面为准。</p>
 <ul>
-<li><b>目的卡</b>【B 多次一致，C 确认核心】：在<b>同一个</b>早上或晚上时段内，严格按卡上顺序光顾卡上的店即达成；中间插别的店会打断（B）。每张只能达成一次，终局加卡上快乐。</li>
-<li><b>单人</b>【B，可信度较低】：按 2 人准备，只有 1 个有主的家；每天抽 3 张放 2 张；按总分评称号：0–50 / 51–60 / 61–70 / 71+（Usual / Happy / All Night Long / Nonstop Full Throttle Weekend）。</li>
+<li><b>目的卡</b>【A p2 §11】：在<b>同一个</b>早上或晚上时段内按卡上顺序光顾卡上的店即达成；中间插别的店就不算；早上 A、晚上 B 不算。一串连续光顾可同时达成多张（电影院→桌游咖啡馆→酒吧 = 同时达成“电影院→桌游咖啡馆”和“桌游咖啡馆→酒吧”）。每张只能达成一次，达成后面朝下，终局加右上角快乐。</li>
+<li><b>单人</b>【A p2 §13】：按 2 人摆，只有自己那张家有主；起手 3 张，每天放 2 张再抽 2 张（手牌保持 3）。称号：0–50 Usual / 51–60 Happy / 61–70 All Night Long / 71+ Nonstop Full Throttle Weekend。</li>
 </ul>
 
-<h3 id="pm5-score">得分方式</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="pm5-score">得分方式</h3></summary><div class="chapter-body">
 <ul>
-<li>【B 多次一致】周五行动 4 结束后：总分 = 快乐标记 + 已达成目的卡快乐 + <b>剩余金钱每 3 金换 1 快乐</b>。最高者胜，平手共享胜利。</li>
+<li>【A p2 §12】周五行动 4 结束后：总分 = 快乐标记 + 已达成目的卡快乐 + <b>剩余金钱每 3 金得 1 快乐</b>。最高者胜，平手共享胜利。</li>
 </ul>
 
-<h3 id="pm5-penalty">扣分 / 惩罚规则</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="pm5-penalty">扣分 / 惩罚规则</h3></summary><div class="chapter-body">
 <ul>
-<li>【B】早上时间用完、到不了中央都市的玩家<b>退出游戏</b>（【C】也这么说）。</li>
-<li>【B 多次一致】晚上时间用完还没到家：按到最近家的步数<b>每步 −2 快乐</b>，最低扣到 0（【C】“剩余距离×2”）。</li>
-<li>【A】金钱超过 18 的部分作废；一次赚钱超过 10 金也只得 10。</li>
-<li>【A】定休日的店当天不能光顾。</li>
+<li>【A p2】早上时间用完、到不了中央都市：<b>淘汰出局</b>。</li>
+<li>【A p2】晚上时间用完还没到家：按到最近家卡的步数<b>每步 −2 快乐</b>，不会扣到 0 以下；无主的家不算。</li>
+<li>【A p2】金钱超过 18 的部分作废；一次赚钱超过 10 金也只得 10。</li>
+<li>【A p2】定休日的店当天不能光顾。</li>
 </ul>
 
-<h3 id="pm5-faq">常见误区 / 待核实</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="pm5-faq">常见误区 / 待核实</h3></summary><div class="chapter-body">
 <ul>
+<li><b>百货店早晚都开</b>（日文资料只把它列在早上，不对）；健身房、便利店也早晚都开。</li>
 <li>同一时段不能重复经过同一张卡；公园不花钱不花时间。</li>
-<li>博客漏了“剩余金钱每 3 金 = 1 快乐”和“平手共享胜利”【B】。</li>
-<li><span class="todo">待补</span> 周二至周五的时间数值、时间换钱比率表、各店营业时段分类、页码——需拿到官方 PDF 后核对。</li>
+<li>博客漏了“剩余金钱每 3 金 = 1 快乐”和“平手共享胜利”。</li>
+<li><span class="badge caution">⚠️</span> 1–3 人的无主家卡：规则书一处说移动时“可以走到无主家卡上”，另两处说“不能回无主的家”。按字面理解：途中可以走上去，但不能当回家终点，算扣分距离时也不算它。</li>
+<li><span class="badge caution">⚠️</span> 周二–周五时间 11/13/15/17 是从插图读出，不是正文文字。</li>
 </ul>
 
-<h3 id="pm5-src">来源</h3>
+</div></details>
+<details class="chapter"><summary><h3 id="pm5-src">来源</h3></summary><div class="chapter-body">
 <ul>
-<li><a href="https://tactical-games.net/downloads/5pm_rulebook_EN.pdf">官方英文规则书（出版社，下载时 502）</a> · <a href="http://web.archive.org/web/20260614093108/https://tactical-games.net/product/its5pm/">出版社商品页存档</a></li>
+<li><a href="https://tactical-games.net/downloads/5pm_rulebook_EN.pdf">官方英文规则书 PDF（出版社）</a> · <a href="http://web.archive.org/web/20260614093108/https://tactical-games.net/product/its5pm/">出版社商品页存档</a></li>
 <li><a href="https://bodoge.hoobby.net/games/its-5-pm/instructions/24756">出版社在 bodoge 的说明</a> · <a href="https://boadgamekazoku.com/its-5pm/">日文规则概要</a></li>
 <li><a href="https://boardgamegeek.com/boardgame/338882/its-5pm">BGG #338882</a> · <a href="https://www.zhuoyou.com/Web/detail?news_id=2707">桌游圈（中文名）</a></li>
 </ul>
+</div></details>
 <a class="totop" href="#top">↑ 回到目录</a>
-</section>
+</div></details></section>
 
-<footer>整理：Grok Bot · 最后更新 2026-10-22 02:55（北京时间）· 资料仅供个人查阅，版权归各出版社所有。</footer>
+<footer>整理：Grok Bot · 最后更新 2026-10-22 03:21（北京时间）· 资料仅供个人查阅，版权归各出版社所有。</footer>
 </main>
+<a class="back-top" href="#top">↑ 回到顶部</a>
 </body>
 </html>

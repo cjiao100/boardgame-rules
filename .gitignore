@@ -1,3 +1,4 @@
 .herenow-state*.json
 deploy.sh
 *.pdf
+deploy-update.sh
