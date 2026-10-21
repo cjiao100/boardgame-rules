@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>俊伟的桌游规则手册</title>
+<style>
+:root{--bg:#fdfcf8;--fg:#1f2328;--mut:#5b6470;--card:#fff;--line:#e3e0d6;--acc:#b5482a;--acc2:#2f6f8f;--hi:#fff4d6;--warn:#fff0f0;--nav:#24313d}
+@media (prefers-color-scheme:dark){:root{--bg:#15181c;--fg:#e6e6e6;--mut:#9aa4af;--card:#1d2127;--line:#323842;--acc:#f08a6c;--acc2:#7cc0e0;--hi:#3a3220;--warn:#3a2224;--nav:#0d1117}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:56px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;-webkit-text-size-adjust:100%}
+nav.top{position:sticky;top:0;z-index:10;background:var(--nav);overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+nav.top a{display:inline-block;color:#fff;text-decoration:none;padding:12px 12px;font-size:15px}
+nav.top a:active,nav.top a:hover{background:rgba(255,255,255,.15)}
+main{max-width:860px;margin:0 auto;padding:12px 14px 60px}
+h1{font-size:1.55em;margin:.6em 0 .2em}
+h2{font-size:1.35em;margin:1.8em 0 .4em;padding:.35em .6em;border-left:6px solid var(--acc);background:var(--card);border-radius:4px}
+h3{font-size:1.12em;margin:1.4em 0 .4em;color:var(--acc2);border-bottom:1px solid var(--line);padding-bottom:.2em}
+h4{font-size:1em;margin:1em 0 .3em}
+.game{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:2px 14px 14px;margin:18px 0}
+.game>h2{margin-top:14px;border-left-width:8px}
+.meta{color:var(--mut);font-size:.9em}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6em 0}
+table{border-collapse:collapse;min-width:100%;font-size:.92em}
+th,td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}
+th{background:rgba(127,127,127,.12);white-space:nowrap}
+code,.pat{font-family:ui-monospace,Menlo,Consolas,monospace;background:rgba(127,127,127,.12);padding:0 4px;border-radius:3px;white-space:nowrap}
+pre{background:rgba(127,127,127,.12);padding:6px 10px;border-radius:6px;display:inline-block;margin:.3em 0;font-size:1.05em;line-height:1.5}
+.hl{background:var(--hi);border:2px solid #d9a400;border-radius:8px;padding:6px 12px;margin:.8em 0}
+.warn{background:var(--warn);border-left:4px solid #d04040;padding:6px 12px;border-radius:4px;margin:.8em 0}
+.todo{display:inline-block;background:#d04040;color:#fff;border-radius:4px;padding:0 6px;font-size:.85em;margin-left:4px}
+.ok{display:inline-block;background:#2e8b57;color:#fff;border-radius:4px;padding:0 6px;font-size:.85em;margin-left:4px}
+.part{display:inline-block;background:#c58a00;color:#fff;border-radius:4px;padding:0 6px;font-size:.85em;margin-left:4px}
+details.toc{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;margin:12px 0}
+details.toc summary{font-weight:bold;cursor:pointer;padding:4px 0}
+details.toc ul{margin:.2em 0 .6em;padding-left:1.2em}
+details.toc li{margin:.15em 0}
+a{color:var(--acc2)}
+.secnav{font-size:.85em;margin:.2em 0 .6em;line-height:2}
+.secnav a{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:0 8px;margin:0 4px 4px 0;text-decoration:none}
+.totop{display:block;text-align:right;font-size:.85em;margin-top:8px}
+ul,ol{padding-left:1.4em}
+li{margin:.15em 0}
+footer{color:var(--mut);font-size:.85em;border-top:1px solid var(--line);margin-top:30px;padding-top:10px}
+</style>
+</head>
+<body id="top">
