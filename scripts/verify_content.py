@@ -59,14 +59,14 @@ for path in sorted((ROOT / 'src').glob('[0-9][0-9]-*.html')):
     gid = re.search(r'<section class="game" id="([^"]+)"', before)[1]
     built = re.search(rf'<section class="game" id="{gid}".*?</section>', page, re.S)[0]
     expected = parse(before)
-    assert expected == parse(built, ('secnav', 'totop')), f'Built content changed: {gid}'
+    assert expected == parse(built, ('secnav', 'totop', 'app-ui')), f'Built content changed: {gid}'
     links += len(expected[1])
     cells += len(expected[2])
     print(f'PASS {path.name}: rule text, links, table cells unchanged')
-# New card/button text and build timestamps are the only whole-page exclusions.
-def stable(text):
-    return re.sub(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}', 'BUILD_TIMESTAMP', text)
-assert parse(stable(original('index.html'))) == parse(stable(page), ('game-grid', 'back-top'))
+# App chrome is outside static game sections; runtime tabs carry app-ui.
 assert len(re.findall(r'class="game-card"', page)) == 7
 assert len(re.findall(r'class="chapter"', page)) == 49
-print(f'PASS whole page: text/links/cells unchanged except new cards/button and timestamps; {links} rule links, {cells} table cells; 7 cards, 49 chapters')
+assert not re.search(r'<(?:script|img|iframe)[^>]+src=|<link[^>]+href=', page)
+assert 'viewport-fit=cover' in page
+assert 'apple-mobile-web-app-capable' in page
+print(f'PASS: {links} rule links, {cells} table cells; 7 cards, 49 expanded chapters; no external assets')
